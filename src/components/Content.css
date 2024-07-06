@@ -1,0 +1,46 @@
+/* src/components/Content.css */
+.content {
+    width: 70%;
+    margin: 30px auto 50px;
+  }
+  
+  .clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  
+  .latest-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .latest-block, .latest-transaction {
+    background-color: white;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 48%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+  }
+  
+  .latest-block h2, .latest-transaction h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .latest-transaction ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .latest-transaction ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .latest-transaction ul li:last-child {
+    border-bottom: none;
+  }
+  
