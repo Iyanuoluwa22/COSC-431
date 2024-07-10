@@ -19,7 +19,7 @@ const InfoContainer = () => {
         
         const etherPriceResponse = await axios.get(`https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${apiKey}`);
         const etherPriceData = etherPriceResponse.data.result;
-        setEtherPrice(`$${etherPriceData.ethusd} @ ${etherPriceData.ethbtc} BTC`);
+        setEtherPrice(`$${parseFloat(etherPriceData.ethusd).toFixed(2)} @ ${etherPriceData.ethbtc} BTC`);
 
         const gasPriceResponse = await axios.get(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${apiKey}`);
         const gasPriceData = gasPriceResponse.data.result;

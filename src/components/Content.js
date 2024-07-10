@@ -10,7 +10,7 @@ const Content = () => {
           <h2>LATEST BLOCK</h2>
         </div>
         <div className="latest-transaction">
-          <h2>LASTEST TRANSACTION</h2>
+          <h2>LATEST TRANSACTION</h2>
           <ul>
             <li></li>
             <li></li>
