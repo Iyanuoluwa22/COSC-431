@@ -1,23 +1,24 @@
 // src/components/Header.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ onLogoClick, onNavClick }) => {
   return (
     <header>
-      <div className="logo">
+      <div className="logo" onClick={onLogoClick} style={{ cursor: 'pointer' }}>
         <h1 className="logo-text"><span>CELEB</span>SCAN</h1>
       </div>
       <i className="fa-solid fa-bars menu-toggle"></i>
       <ul className="nav">
-        <li><a href="articles.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><Link to="/" onClick={onNavClick}>Home</Link></li>
+        <li><Link to="/about" onClick={onNavClick}>About</Link></li>
         <input type="text" placeholder="Search by address/Txn Hash" />
         <li>
-          <a href="#">
+          <Link to="/login">
             <i className="fa fa-user"></i>
-            Celebscan
-          </a>
+            Login/Register
+          </Link>
         </li>
       </ul>
     </header>
