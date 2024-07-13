@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-const Header = ({ onLogoClick, onNavClick }) => {
+const Header = ({ onLogoClick, onNavClick, isLoggedIn }) => {
   return (
     <header>
       <div className="logo" onClick={onLogoClick} style={{ cursor: 'pointer' }}>
@@ -20,6 +20,7 @@ const Header = ({ onLogoClick, onNavClick }) => {
             Login/Register
           </Link>
         </li>
+        {isLoggedIn && <li><Link to="/chat" onClick={onNavClick}>Chat</Link></li>} {/* Conditionally render Chat link */}
       </ul>
     </header>
   );
