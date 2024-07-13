@@ -43,6 +43,7 @@ const ProfilePage = () => {
 
   return (
     <div>
+      <h1>Username</h1>
       Ether Price: {walletEth} ETH <br />
       Wallet Price: ${walletPrice} USD <br />
       Wallet Transactions: {JSON.stringify(walletTransactions, null, 2)}

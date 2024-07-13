@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Chat from './pages/Chat';
+import Profile from './pages/Profile'
 
 function AppContent() {
   const location = useLocation();
@@ -34,6 +35,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={showInfo ? <><InfoContainer /><Content /></> : <Home />} />
         <Route path="/about" element={showInfo ? <><InfoContainer /><Content /></> : <About />} />
+        <Route path="/profile" element={<Profile/>}/>
         <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Pass login handler */}
         <Route path="/chat" element={<Chat />} /> {/* Add the chat route */}
       </Routes>

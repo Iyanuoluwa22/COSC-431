@@ -12,6 +12,7 @@ const Header = ({ onLogoClick, onNavClick, isLoggedIn }) => {
       <i className="fa-solid fa-bars menu-toggle"></i>
       <ul className="nav">
         <li><Link to="/" onClick={onNavClick}>Home</Link></li>
+        <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/about" onClick={onNavClick}>About</Link></li>
         <input type="text" placeholder="Search 'Username'"/>
         <li>

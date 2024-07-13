@@ -2,7 +2,7 @@
 import React from 'react';
 import InfoContainer from '../components/InfoContainer';
 import Content from '../components/Content';
-import ProfilePage from '../scripts/UserInfo';
+import Chat from './Chat'
 
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
     <div>
       <InfoContainer/>
       <Content/>
-      <ProfilePage/>
+      <Chat/>
     </div>
   );
 };
