@@ -1,11 +1,16 @@
 // src/pages/Home.js
 import React from 'react';
+import InfoContainer from '../components/InfoContainer';
+import Content from '../components/Content';
+import ProfilePage from '../scripts/UserInfo';
+
 
 const Home = () => {
   return (
     <div>
-      <h1>Home Page</h1>
-      <p>Welcome to Celebscan!</p>
+      <InfoContainer/>
+      <Content/>
+      <ProfilePage/>
     </div>
   );
 };

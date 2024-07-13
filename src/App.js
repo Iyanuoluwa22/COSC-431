@@ -21,6 +21,7 @@ function AppContent() {
     setShowInfo(false);
   };
 
+
   return (
     <>
       <Header onLogoClick={handleLogoClick} onNavClick={handleNavClick} />

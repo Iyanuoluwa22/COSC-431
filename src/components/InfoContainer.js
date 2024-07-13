@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './InfoContainer.css';
 
+// require('dotenv').config();
+
 const InfoContainer = () => {
   const [etherPrice, setEtherPrice] = useState('');
   const [marketCap, setMarketCap] = useState('');

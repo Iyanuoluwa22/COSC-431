@@ -13,7 +13,7 @@ const Header = ({ onLogoClick, onNavClick }) => {
       <ul className="nav">
         <li><Link to="/" onClick={onNavClick}>Home</Link></li>
         <li><Link to="/about" onClick={onNavClick}>About</Link></li>
-        <input type="text" placeholder="Search by address/Txn Hash" />
+        <input type="text" placeholder="Search 'Username'"/>
         <li>
           <Link to="/login">
             <i className="fa fa-user"></i>
