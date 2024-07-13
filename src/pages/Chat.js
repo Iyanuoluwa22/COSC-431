@@ -63,7 +63,7 @@ const Chat = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username to chat with"
+          placeholder="Enter Chatroom Name"
         />
         <button onClick={handleStartChat}>Start Chat</button>
         <div style={{
