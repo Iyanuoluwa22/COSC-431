@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        #sidebar {
+            width: 200px;
+            border-right: 1px solid #ccc;
+            padding: 10px;
+        }
+        #chat-container {
+            flex-grow: 1;
+            padding: 10px;
+        }
+        #chat-log {
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #chat-log div {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <h3>Chat</h3>
+        <div id="chats-dropdown">
+            <label for="chats">Select a chat:</label>
+            <select id="chats" title="Select a chat" size="10">
+                <!-- Dynamically populated -->
+            </select>
+        </div>
+    </div>
+    <div id="chat-container">
+        <input type="text" id="username" placeholder="Enter username to chat with" />
+        <button id="start-chat">Start Chat</button>
+        <div id="chat-log">
+            <!-- Chat messages will be displayed here -->
+        </div>
+        <input type="text" id="message" placeholder="Type your message" />
+        <button id="send-message">Send</button>
+    </div>
+    <script src="Chat.js"></script>
+</body>
+</html>

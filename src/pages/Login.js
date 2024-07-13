@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithP
 import { auth, googleProvider } from '../firebase';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -16,6 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      onLogin(); // Call the onLogin prop
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
       setError(err.message);
@@ -26,6 +27,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      onLogin(); // Call the onLogin prop
       navigate('/'); // Navigate to the home page after successful registration
     } catch (err) {
       setError(err.message);
@@ -35,6 +37,7 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+      onLogin(); // Call the onLogin prop
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
       setError(err.message);

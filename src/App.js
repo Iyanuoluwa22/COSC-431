@@ -8,10 +8,12 @@ import Content from './components/Content';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
+import Chat from './pages/Chat';
 
 function AppContent() {
   const location = useLocation();
   const [showInfo, setShowInfo] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Manage login state
 
   const handleLogoClick = () => {
     setShowInfo(true);
@@ -21,14 +23,19 @@ function AppContent() {
     setShowInfo(false);
   };
 
+  // This function simulates a login action
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
   return (
     <>
-      <Header onLogoClick={handleLogoClick} onNavClick={handleNavClick} />
+      <Header onLogoClick={handleLogoClick} onNavClick={handleNavClick} isLoggedIn={isLoggedIn} />
       <Routes>
         <Route path="/" element={showInfo ? <><InfoContainer /><Content /></> : <Home />} />
         <Route path="/about" element={showInfo ? <><InfoContainer /><Content /></> : <About />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Pass login handler */}
+        <Route path="/chat" element={<Chat />} /> {/* Add the chat route */}
       </Routes>
     </>
   );
