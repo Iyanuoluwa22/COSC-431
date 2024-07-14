@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
 
 const Chat = () => {
   const [username, setUsername] = useState('');
@@ -9,7 +12,25 @@ const Chat = () => {
 
   useEffect(() => {
     loadChats();
-  }, []);
+
+    socket.on('message', (data) => {
+      if (data.user === currentChatUser) {
+        setChatLog((prevChatLog) => [...prevChatLog, data.message]);
+        saveMessage(data.user, data.message);
+      }
+    });
+
+    socket.on('new-chat', (data) => {
+      if (!chats.includes(data)) {
+        setChats((prevChats) => [...prevChats, data]);
+      }
+    });
+
+    return () => {
+      socket.off('message');
+      socket.off('new-chat');
+    };
+  }, [currentChatUser, chats]);
 
   const loadChats = () => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
@@ -25,22 +46,33 @@ const Chat = () => {
     localStorage.setItem('chats', JSON.stringify(storedChats));
   };
 
+  const saveChat = (user) => {
+    const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
+    if (!storedChats[user]) {
+      storedChats[user] = [];
+    }
+    localStorage.setItem('chats', JSON.stringify(storedChats));
+  };
+
   const loadMessages = (user) => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
     setChatLog(storedChats[user] || []);
   };
 
   const handleStartChat = () => {
-    if (username.trim()) {
+    if (username.trim() && !chats.includes(username.trim())) {
       setCurrentChatUser(username.trim());
       loadMessages(username.trim());
+      socket.emit('new-chat', username.trim());
+      setChats((prevChats) => [...prevChats, username.trim()]);
+      saveChat(username.trim());
     }
   };
 
   const handleSendMessage = () => {
     if (message.trim() && currentChatUser) {
-      saveMessage(currentChatUser, message.trim());
-      setChatLog((prevChatLog) => [...prevChatLog, message.trim()]);
+      const msgData = { user: currentChatUser, message: message.trim() };
+      socket.emit('message', msgData);
       setMessage('');
     }
   };
