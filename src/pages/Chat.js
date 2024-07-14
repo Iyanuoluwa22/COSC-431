@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');
 
-const Chat = ({ userEmail }) => {
+const Chat = () => {
   const [username, setUsername] = useState('');
   const [currentChatUser, setCurrentChatUser] = useState(null);
   const [message, setMessage] = useState('');
@@ -15,8 +15,8 @@ const Chat = ({ userEmail }) => {
 
     socket.on('message', (data) => {
       if (data.user === currentChatUser) {
-        setChatLog((prevChatLog) => [...prevChatLog, data.message]);
-        saveMessage(data.user, data.message);
+        setChatLog((prevChatLog) => [...prevChatLog, { message: data.message, email: data.email }]);
+        saveMessage(data.user, { message: data.message, email: data.email });
       }
     });
 
@@ -37,12 +37,12 @@ const Chat = ({ userEmail }) => {
     setChats(Object.keys(storedChats));
   };
 
-  const saveMessage = (user, message) => {
+  const saveMessage = (user, messageData) => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
     if (!storedChats[user]) {
       storedChats[user] = [];
     }
-    storedChats[user].push(message);
+    storedChats[user].push(messageData);
     localStorage.setItem('chats', JSON.stringify(storedChats));
   };
 
@@ -71,7 +71,8 @@ const Chat = ({ userEmail }) => {
 
   const handleSendMessage = () => {
     if (message.trim() && currentChatUser) {
-      const msgData = { user: currentChatUser, message: message.trim() };
+      const userEmail = localStorage.getItem('userEmail'); // Retrieve email from local storage
+      const msgData = { user: currentChatUser, message: message.trim(), email: userEmail };
       socket.emit('message', msgData);
       setMessage('');
     }
@@ -102,7 +103,10 @@ const Chat = ({ userEmail }) => {
           height: '400px', border: '1px solid #ccc', padding: '10px', overflowY: 'scroll', marginBottom: '10px'
         }}>
           {chatLog.map((msg, index) => (
-            <div key={index}>{msg}</div>
+            <div key={index} style={{ marginBottom: '10px' }}>
+              <div>{msg.message}</div>
+              <div style={{ fontSize: '0.8em', color: 'gray' }}>{msg.email}</div>
+            </div>
           ))}
         </div>
         <input

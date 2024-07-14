@@ -15,8 +15,10 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      onLogin(); // Call the onLogin prop
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userEmail = userCredential.user.email;
+      localStorage.setItem('userEmail', userEmail); // Save email to local storage
+      onLogin(userEmail); // Call the onLogin prop with email
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
       setError(err.message);
@@ -26,8 +28,10 @@ const Login = ({ onLogin }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      onLogin(); // Call the onLogin prop
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userEmail = userCredential.user.email;
+      localStorage.setItem('userEmail', userEmail); // Save email to local storage
+      onLogin(userEmail); // Call the onLogin prop with email
       navigate('/'); // Navigate to the home page after successful registration
     } catch (err) {
       setError(err.message);
@@ -36,8 +40,10 @@ const Login = ({ onLogin }) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      onLogin(); // Call the onLogin prop
+      const result = await signInWithPopup(auth, googleProvider);
+      const userEmail = result.user.email;
+      localStorage.setItem('userEmail', userEmail); // Save email to local storage
+      onLogin(userEmail); // Call the onLogin prop with email
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
       setError(err.message);
