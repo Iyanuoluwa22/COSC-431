@@ -13,7 +13,7 @@ const Header = ({ onLogoClick, onNavClick, isLoggedIn }) => {
       <ul className="nav">
         <li><Link to="/" onClick={onNavClick}>Home</Link></li>
         <li><Link to="/profile">Profile</Link></li>
-        <input type="text" placeholder="Search 'Username'"/>
+        
         <li>
           <Link to="/login">
             <i className="fa fa-user"></i>
