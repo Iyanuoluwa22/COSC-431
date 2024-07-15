@@ -2,12 +2,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { auth, googleProvider, db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
   const [error, setError] = useState(null);
   const [isRegister, setIsRegister] = useState(false);
   const navigate = useNavigate();
@@ -16,6 +19,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
       setError(err.message);
@@ -25,7 +29,14 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        username: username,
+        walletAddress: walletAddress,
+      });
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful registration
     } catch (err) {
       setError(err.message);
@@ -34,7 +45,13 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        walletAddress: 'GoogleUserWalletAddress', // Placeholder for Google sign-in
+      });
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
       setError(err.message);
@@ -67,6 +84,32 @@ const Login = () => {
             required
           />
         </div>
+        {isRegister && (
+          <>
+            <div className="form-group">
+              <label htmlFor="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="walletAddress">Wallet Address:</label>
+              <input
+                type="text"
+                id="walletAddress"
+                name="walletAddress"
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                required
+              />
+            </div>
+          </>
+        )}
         {error && <p className="error">{error}</p>}
         <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
       </form>
