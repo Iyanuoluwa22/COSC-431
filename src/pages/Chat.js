@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
 
 const Chat = () => {
   const [username, setUsername] = useState('');
@@ -9,19 +12,45 @@ const Chat = () => {
 
   useEffect(() => {
     loadChats();
-  }, []);
+
+    socket.on('message', (data) => {
+      if (data.user === currentChatUser) {
+        setChatLog((prevChatLog) => [...prevChatLog, { message: data.message, email: data.email }]);
+        saveMessage(data.user, { message: data.message, email: data.email });
+      }
+    });
+
+    socket.on('new-chat', (data) => {
+      if (!chats.includes(data)) {
+        setChats((prevChats) => [...prevChats, data]);
+      }
+    });
+
+    return () => {
+      socket.off('message');
+      socket.off('new-chat');
+    };
+  }, [currentChatUser, chats]);
 
   const loadChats = () => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
     setChats(Object.keys(storedChats));
   };
 
-  const saveMessage = (user, message) => {
+  const saveMessage = (user, messageData) => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
     if (!storedChats[user]) {
       storedChats[user] = [];
     }
-    storedChats[user].push(message);
+    storedChats[user].push(messageData);
+    localStorage.setItem('chats', JSON.stringify(storedChats));
+  };
+
+  const saveChat = (user) => {
+    const storedChats = JSON.parse(localStorage.getItem('chats')) || {};
+    if (!storedChats[user]) {
+      storedChats[user] = [];
+    }
     localStorage.setItem('chats', JSON.stringify(storedChats));
   };
 
@@ -31,16 +60,20 @@ const Chat = () => {
   };
 
   const handleStartChat = () => {
-    if (username.trim()) {
+    if (username.trim() && !chats.includes(username.trim())) {
       setCurrentChatUser(username.trim());
       loadMessages(username.trim());
+      socket.emit('new-chat', username.trim());
+      setChats((prevChats) => [...prevChats, username.trim()]);
+      saveChat(username.trim());
     }
   };
 
   const handleSendMessage = () => {
     if (message.trim() && currentChatUser) {
-      saveMessage(currentChatUser, message.trim());
-      setChatLog((prevChatLog) => [...prevChatLog, message.trim()]);
+      const userEmail = localStorage.getItem('userEmail'); // Retrieve email from local storage
+      const msgData = { user: currentChatUser, message: message.trim(), email: userEmail };
+      socket.emit('message', msgData);
       setMessage('');
     }
   };
@@ -70,7 +103,10 @@ const Chat = () => {
           height: '400px', border: '1px solid #ccc', padding: '10px', overflowY: 'scroll', marginBottom: '10px'
         }}>
           {chatLog.map((msg, index) => (
-            <div key={index}>{msg}</div>
+            <div key={index} style={{ marginBottom: '10px' }}>
+              <div>{msg.message}</div>
+              <div style={{ fontSize: '0.8em', color: 'gray' }}>{msg.email}</div>
+            </div>
           ))}
         </div>
         <input

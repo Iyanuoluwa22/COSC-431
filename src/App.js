@@ -9,12 +9,13 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Chat from './pages/Chat';
-import Profile from './pages/Profile'
+import Profile from './pages/Profile';
 
 function AppContent() {
   const location = useLocation();
   const [showInfo, setShowInfo] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Manage login state
+  const [userEmail, setUserEmail] = useState(''); // Store user's email
 
   const handleLogoClick = () => {
     setShowInfo(true);
@@ -25,19 +26,20 @@ function AppContent() {
   };
 
   // This function simulates a login action
-  const handleLogin = () => {
+  const handleLogin = (email) => {
     setIsLoggedIn(true);
+    setUserEmail(email); // Set user email on login
   };
 
   return (
     <>
       <Header onLogoClick={handleLogoClick} onNavClick={handleNavClick} isLoggedIn={isLoggedIn} />
       <Routes>
-        <Route path="/" element={showInfo ? <><InfoContainer /><Content /></> : <Home />} />
+        <Route path="/" element={showInfo ? <><InfoContainer /><Content /></> : <Home isLoggedIn={isLoggedIn} userEmail={userEmail} />} />
         <Route path="/about" element={showInfo ? <><InfoContainer /><Content /></> : <About />} />
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Pass login handler */}
-        <Route path="/chat" element={<Chat />} /> {/* Add the chat route */}
+        <Route path="/chat" element={isLoggedIn ? <Chat userEmail={userEmail} /> : <Login onLogin={handleLogin} />} /> {/* Add the chat route */}
       </Routes>
     </>
   );

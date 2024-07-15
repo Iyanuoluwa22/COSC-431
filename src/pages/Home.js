@@ -2,15 +2,14 @@
 import React from 'react';
 import InfoContainer from '../components/InfoContainer';
 import Content from '../components/Content';
-import Chat from './Chat'
+import Chat from './Chat';
 
-
-const Home = () => {
+const Home = ({ isLoggedIn, userEmail }) => {
   return (
     <div>
       <InfoContainer/>
       <Content/>
-      <Chat/>
+      {isLoggedIn && <Chat userEmail={userEmail} />}
     </div>
   );
 };
