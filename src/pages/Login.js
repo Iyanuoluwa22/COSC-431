@@ -6,6 +6,8 @@ import { auth, googleProvider, db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import './Login.css';
 
+let exportUsername = "";
+
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +21,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      exportUsername = username;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
@@ -36,6 +39,7 @@ const Login = ({ onLogin }) => {
         username: username,
         walletAddress: walletAddress,
       });
+      exportUsername = username;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful registration
     } catch (err) {
@@ -51,6 +55,7 @@ const Login = ({ onLogin }) => {
         email: user.email,
         walletAddress: 'GoogleUserWalletAddress', // Placeholder for Google sign-in
       });
+      exportUsername = user.displayName || "Google User";
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
@@ -122,3 +127,4 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+export { exportUsername };
