@@ -41,7 +41,7 @@ function AppContent() {
       <Header onLogoClick={handleLogoClick} onNavClick={handleNavClick} isLoggedIn={isLoggedIn} onLogout={handleLogout}/>
       <Routes>
         <Route path="/" element={showInfo ? <><InfoContainer /><Content /></> : <Home isLoggedIn={isLoggedIn} userEmail={userEmail} />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={isLoggedIn? <Profile />: <Login onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Pass login handler */}
         <Route path="/chat" element={isLoggedIn ? <Chat userEmail={userEmail} /> : <Login onLogin={handleLogin} />} /> {/* Add the chat route */}
       </Routes>
