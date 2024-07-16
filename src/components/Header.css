@@ -1,172 +1,186 @@
-/* src/components/Header.css */
 header {
-    background-color: rgb(109, 52, 241);
-    height: 66px;
+  background-color: rgb(109, 52, 241);
+  height: 66px;
+}
+
+header * {
+  color: white;
+}
+
+header .logo {
+  float: left;
+  height: inherit;
+  margin-left: 2em;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex: 2;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav li {
+  list-style: none;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #e0dede;
+  padding: 10px 20px;
+}
+
+.nav input[type="text"] {
+  flex: 1;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 16px;
+  border: .6px solid #ccc;
+  border-radius: 5px;
+  color: black;
+}
+
+.nav .fa-user {
+  margin-right: 5px;
+}
+
+header .logo-text {
+  margin: 10px;
+  font-family: lombok, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+header .logo-text span {
+  color: rgb(144, 188, 224);
+}
+
+header ul {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+header ul li {
+  float: left;
+  position: relative;
+}
+
+header ul li ul {
+  position: absolute;
+  top: 66px;
+  right: 0px;
+  width: 180px;
+  display: none;
+  z-index: 88888;
+}
+
+header ul li:hover ul {
+  display: block;
+}
+
+header ul li ul li {
+  width: 100%;
+}
+
+header ul li ul li a {
+  padding: 10px;
+}
+
+header ul li ul li a.logout {
+  color: rgb(241, 87, 87);
+}
+
+header ul li ul li a:hover {
+  background: rgb(248, 248, 247);
+}
+
+header ul li a {
+  display: block;
+  padding: 21px;
+  font-size: 1.2em;
+  text-decoration: none;
+}
+
+header ul li a:hover {
+  background: rgb(35, 6, 160);
+  transition: 0.5s;
+}
+
+header .menu-toggle {
+  display: none;
+}
+
+
+.sign-out-btn {
+  background-color: rgb(109, 52, 241);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.sign-out-btn:hover {
+  background: rgb(35, 6, 160);
+  transition: 0.5s;
+}
+
+@media only screen and (max-width: 770px) {
+  header {
+    position: relative;
   }
-  
-  header * {
+
+  header ul {
+    width: 100%;
+    background: rgb(109, 52, 241);
+    max-height: 0px;
+    overflow: hidden;
+  }
+
+  .showing {
+    max-height: 100em;
+  }
+
+  header ul li {
+    width: 100%;
+  }
+
+  header ul li ul {
+    position: static;
+    display: block;
+    width: 100%;
+  }
+
+  header ul li ul li a {
+    padding: 10px;
+    background: rgb(109, 52, 241);
     color: white;
+    padding-left: 50px;
   }
-  
+
+  header .menu-toggle {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 1.5em;
+  }
+
   header .logo {
     float: left;
     height: inherit;
-    margin-left: 2em;
+    margin-left: .8em;
   }
-  
-  .menu-toggle {
-    display: none;
+
+  .post-wrapper {
+    width: 20px;
   }
-  
-  .nav {
-    display: flex;
-    align-items: center;
-    flex: 2;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .nav li {
-    list-style: none;
-  }
-  
-  .nav a {
-    text-decoration: none;
-    color: #e0dede;
-    padding: 10px 20px;
-  }
-  
-  .nav input[type="text"] {
-    flex: 1;
-    max-width: 400px;
-    padding: 10px;
-    font-size: 16px;
-    border: .6px solid #ccc;
-    border-radius: 5px;
-    color: black;
-  }
-  
-  .nav .fa-user {
-    margin-right: 5px;
-  }
-  
-  header .logo-text {
-    margin: 10px;
-    font-family: lombok, sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  header .logo-text span {
-    color: rgb(144, 188, 224);
-  }
-  
-  header ul {
-    float: right;
-    margin: 0px;
-    padding: 0px;
-    list-style: none;
-  }
-  
-  header ul li {
-    float: left;
-    position: relative;
-  }
-  
-  header ul li ul {
-    position: absolute;
-    top: 66px;
-    right: 0px;
-    width: 180px;
-    display: none;
-    z-index: 88888;
-  }
-  
-  header ul li:hover ul {
-    display: block;
-  }
-  
-  header ul li ul li {
-    width: 100%;
-  }
-  
-  header ul li ul li a {
-    padding: 10px;
-  }
-  
-  header ul li ul li a.logout {
-    color: rgb(241, 87, 87);
-  }
-  
-  header ul li ul li a:hover {
-    background: rgb(248, 248, 247);
-  }
-  
-  header ul li a {
-    display: block;
-    padding: 21px;
-    font-size: 1.2em;
-    text-decoration: none;
-  }
-  
-  header ul li a:hover {
-    background: rgb(35, 6, 160);
-    transition: 0.5s;
-  }
-  
-  header .menu-toggle {
-    display: none;
-  }
-  
-  @media only screen and (max-width: 770px) {
-    header {
-      position: relative;
-    }
-  
-    header ul {
-      width: 100%;
-      background: rgb(109, 52, 241);
-      max-height: 0px;
-      overflow: hidden;
-    }
-  
-    .showing {
-      max-height: 100em;
-    }
-  
-    header ul li {
-      width: 100%;
-    }
-  
-    header ul li ul {
-      position: static;
-      display: block;
-      width: 100%;
-    }
-  
-    header ul li ul li a {
-      padding: 10px;
-      background: rgb(109, 52, 241);
-      color: white;
-      padding-left: 50px;
-    }
-  
-    header .menu-toggle {
-      display: block;
-      position: absolute;
-      right: 20px;
-      top: 10px;
-      font-size: 1.5em;
-    }
-  
-    header .logo {
-      float: left;
-      height: inherit;
-      margin-left: .8em;
-    }
-  
-    .post-wrapper {
-      width: 20px;
-    }
-  }
-  
+}
