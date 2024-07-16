@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
@@ -25,6 +24,7 @@ const Login = ({ onLogin }) => {
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const storedUsername = userDoc.data().username;
       localStorage.setItem('username', storedUsername); // Save username to local storage
+      localStorage.setItem('userEmail', email); // Save email to local storage
       exportUsername = storedUsername;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful login
@@ -44,6 +44,7 @@ const Login = ({ onLogin }) => {
         walletAddress: walletAddress,
       });
       localStorage.setItem('username', username); // Save username to local storage
+      localStorage.setItem('userEmail', email); // Save email to local storage
       exportUsername = username;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful registration
@@ -62,6 +63,7 @@ const Login = ({ onLogin }) => {
       });
       const googleUsername = user.displayName || 'Google User';
       localStorage.setItem('username', googleUsername); // Save username to local storage
+      localStorage.setItem('userEmail', user.email); // Save email to local storage
       exportUsername = googleUsername;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful Google sign-in
