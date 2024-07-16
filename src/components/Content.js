@@ -7,7 +7,7 @@ const Content = () => {
     <div className="content clearfix">
       <div className="latest-container">
         <div className="latest-block">
-          <h2>CELEB PROFILES</h2>
+          <h2>CELEB/WHALE PROFILES</h2>
           <ul>
             <li> <a href="https://etherscan.io/address/0xCe90a7949bb78892F159F428D0dC23a8E3584d75">Snoop Dog</a>
         </li>
@@ -17,8 +17,14 @@ const Content = () => {
         </li>
             <li> <a href="https://etherscan.io/address/0xb6aa5a1aa37a4195725cdf1576dc741d359b56bd">Paris Hilton</a>
         </li>
+        <li> <a href="https://etherscan.io/address/0x00000000219ab540356cBB839Cbe05303d7705Fa">Whale 1</a>
+        </li>
+            <li> <a href="https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2">Whale 2</a>
+        </li>
+            <li> <a href="https://etherscan.io/address/0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8">Whale 3</a>
+        </li>
           </ul>
-        </div>
+          </div>
         <div className="latest-transaction">
           <h2>LATEST TRANSACTION</h2>
           <ul>
