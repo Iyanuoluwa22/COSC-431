@@ -13,22 +13,25 @@ const Chat = () => {
   useEffect(() => {
     loadChats();
 
-    socket.on('message', (data) => {
+    const handleMessage = (data) => {
       if (data.user === currentChatUser) {
         setChatLog((prevChatLog) => [...prevChatLog, { message: data.message, email: data.email }]);
         saveMessage(data.user, { message: data.message, email: data.email });
       }
-    });
+    };
 
-    socket.on('new-chat', (data) => {
+    const handleNewChat = (data) => {
       if (!chats.includes(data)) {
         setChats((prevChats) => [...prevChats, data]);
       }
-    });
+    };
+
+    socket.on('message', handleMessage);
+    socket.on('new-chat', handleNewChat);
 
     return () => {
-      socket.off('message');
-      socket.off('new-chat');
+      socket.off('message', handleMessage);
+      socket.off('new-chat', handleNewChat);
     };
   }, [currentChatUser, chats]);
 

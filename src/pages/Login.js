@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, db } from '../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import './Login.css';
 
 let exportUsername = "";
@@ -20,8 +20,12 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      exportUsername = username;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const storedUsername = userDoc.data().username;
+      localStorage.setItem('username', storedUsername); // Save username to local storage
+      exportUsername = storedUsername;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
@@ -39,6 +43,7 @@ const Login = ({ onLogin }) => {
         username: username,
         walletAddress: walletAddress,
       });
+      localStorage.setItem('username', username); // Save username to local storage
       exportUsername = username;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful registration
@@ -55,7 +60,9 @@ const Login = ({ onLogin }) => {
         email: user.email,
         walletAddress: 'GoogleUserWalletAddress', // Placeholder for Google sign-in
       });
-      exportUsername = user.displayName || "Google User";
+      const googleUsername = user.displayName || 'Google User';
+      localStorage.setItem('username', googleUsername); // Save username to local storage
+      exportUsername = googleUsername;
       if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
