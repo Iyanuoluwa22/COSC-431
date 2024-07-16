@@ -2,12 +2,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { auth, googleProvider, db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import './Login.css';
+
+let exportUsername = "";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
   const [error, setError] = useState(null);
   const [isRegister, setIsRegister] = useState(false);
   const navigate = useNavigate();
@@ -15,10 +20,9 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userEmail = userCredential.user.email;
-      localStorage.setItem('userEmail', userEmail); // Save email to local storage
-      onLogin(userEmail); // Call the onLogin prop with email
+      await signInWithEmailAndPassword(auth, email, password);
+      exportUsername = username;
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful login
     } catch (err) {
       setError(err.message);
@@ -29,9 +33,14 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const userEmail = userCredential.user.email;
-      localStorage.setItem('userEmail', userEmail); // Save email to local storage
-      onLogin(userEmail); // Call the onLogin prop with email
+      const user = userCredential.user;
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        username: username,
+        walletAddress: walletAddress,
+      });
+      exportUsername = username;
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful registration
     } catch (err) {
       setError(err.message);
@@ -40,10 +49,14 @@ const Login = ({ onLogin }) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const userEmail = result.user.email;
-      localStorage.setItem('userEmail', userEmail); // Save email to local storage
-      onLogin(userEmail); // Call the onLogin prop with email
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        walletAddress: 'GoogleUserWalletAddress', // Placeholder for Google sign-in
+      });
+      exportUsername = user.displayName || "Google User";
+      if (onLogin) onLogin(); // Call the onLogin prop if it exists
       navigate('/'); // Navigate to the home page after successful Google sign-in
     } catch (err) {
       setError(err.message);
@@ -76,6 +89,32 @@ const Login = ({ onLogin }) => {
             required
           />
         </div>
+        {isRegister && (
+          <>
+            <div className="form-group">
+              <label htmlFor="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="walletAddress">Wallet Address:</label>
+              <input
+                type="text"
+                id="walletAddress"
+                name="walletAddress"
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                required
+              />
+            </div>
+          </>
+        )}
         {error && <p className="error">{error}</p>}
         <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
       </form>
@@ -88,3 +127,4 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+export { exportUsername };
